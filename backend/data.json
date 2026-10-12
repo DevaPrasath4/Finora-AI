@@ -1,0 +1,16 @@
+{
+  "users": [],
+  "employees": [],
+  "invoices": [],
+  "payments": [],
+  "expenses": [],
+  "transactions": [],
+  "inventory": [],
+  "vendors": [],
+  "gst_rates": [],
+  "fraud_alerts": [],
+  "settings": [],
+  "customer_bills": [],
+  "activity_logs": [],
+  "salary_payments": []
+}

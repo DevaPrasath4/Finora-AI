@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Finora AI - PPT Presentation Content Guide</title>
+<style>
+  body { font-family: 'Calibri', Arial, sans-serif; font-size: 11pt; color: #1a1a2e; margin: 40px; line-height: 1.65; }
+  h1 { font-size: 22pt; color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 8px; margin-top: 30px; }
+  h2 { font-size: 15pt; color: white; background: #0f3460; padding: 10px 16px; border-radius: 4px; margin-top: 30px; }
+  h3 { font-size: 13pt; color: #e94560; margin-top: 20px; font-weight: bold; }
+  h4 { font-size: 11pt; color: #0f3460; margin-top: 12px; }
+  .slide-box {
+    border: 2px solid #0f3460; border-radius: 10px; padding: 20px 24px;
+    margin: 20px 0; background: #f8faff;
+  }
+  .slide-number {
+    display: inline-block; background: #e94560; color: white; border-radius: 50%;
+    width: 30px; height: 30px; line-height: 30px; text-align: center;
+    font-weight: bold; font-size: 13pt; margin-right: 10px; vertical-align: middle;
+  }
+  .slide-title { font-size: 16pt; font-weight: bold; color: #0f3460; vertical-align: middle; }
+  .slide-type { font-size: 9pt; color: #888; float: right; font-style: italic; margin-top: 5px; }
+  .bullet-main { font-size: 12pt; font-weight: bold; color: #16213e; margin: 10px 0 4px 0; }
+  .bullet-sub { font-size: 10.5pt; color: #444; margin: 2px 0 2px 22px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 9pt; font-weight: bold; margin-right: 5px; }
+  .tag-ai { background: #d1fae5; color: #065f46; }
+  .tag-tech { background: #dbeafe; color: #1e40af; }
+  .tag-biz { background: #fce7f3; color: #9d174d; }
+  .tag-feature { background: #fff7ed; color: #9a3412; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10.5pt; }
+  th { background: #0f3460; color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border: 1px solid #d0d7e6; }
+  tr:nth-child(even) { background: #f0f4ff; }
+  .cover { text-align: center; padding: 50px 30px; border: 3px solid #0f3460; border-radius: 12px; background: linear-gradient(135deg, #eef2ff, #fce7f3); margin-bottom: 30px; }
+  .design-note { background: #fffbe6; border-left: 4px solid #f59e0b; padding: 10px 14px; margin: 10px 0; font-style: italic; font-size: 10pt; color: #78350f; }
+  .speaker-note { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 10px 14px; margin: 10px 0; font-size: 10pt; color: #14532d; }
+  ul { margin: 6px 0 10px 20px; }
+  li { margin: 4px 0; }
+  .divider { text-align: center; font-size: 20pt; color: #c0c8d8; margin: 30px 0; letter-spacing: 10px; }
+  p { margin: 6px 0; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1 style="border:none; font-size: 30pt; margin: 0;">🛡️ FINORA AI</h1>
+  <p style="font-size: 14pt; color: #0f3460; font-weight: bold; margin: 10px 0;">Intelligent Financial Management for Indian Retail Businesses</p>
+  <p style="font-size: 11pt; color: #555;">PowerPoint Presentation Content Guide</p>
+  <p style="font-size: 10pt; color: #888; margin-top: 20px;">Use this document as the blueprint for your final PPT slides.<br>Each numbered section = one PowerPoint slide.</p>
+</div>
+
+<h1>🎨 Presentation Design Instructions</h1>
+<table>
+  <tr><th>Element</th><th>Recommendation</th></tr>
+  <tr><td>Theme Color 1 (Primary)</td><td>#0f3460 (Deep Navy Blue)</td></tr>
+  <tr><td>Theme Color 2 (Accent)</td><td>#e94560 (Vibrant Red / Coral)</td></tr>
+  <tr><td>Theme Color 3 (Highlight)</td><td>#00d9c0 (Teal / Cyan)</td></tr>
+  <tr><td>Background</td><td>Dark mode preferred: #0a0d14 or Light: #f8faff</td></tr>
+  <tr><td>Font (Title)</td><td>Inter Bold or Calibri Bold, 28-36pt</td></tr>
+  <tr><td>Font (Body)</td><td>Inter Regular or Calibri, 18-22pt</td></tr>
+  <tr><td>Slide Count</td><td>15–18 slides (including cover + Q&amp;A)</td></tr>
+  <tr><td>Duration</td><td>15–20 minutes presentation</td></tr>
+  <tr><td>Icons</td><td>Use flat icons (Flaticon / Feather Icons set)</td></tr>
+</table>
+
+<div class="divider">― ◆ ―</div>
+
+<!-- SLIDE 1 -->
+<div class="slide-box">
+  <span class="slide-number">1</span>
+  <span class="slide-title">Title Slide — Opening Impact</span>
+  <span class="slide-type">Cover Slide</span>
+  <br><br>
+  <div class="bullet-main">🛡️ FINORA AI</div>
+  <p class="bullet-sub">Subtitle: <em>Intelligent Financial Management Platform for Indian Retail &amp; FMCG Businesses</em></p>
+  <p class="bullet-sub">Tagline: <strong>"From Invoices to Insights — All in One Place"</strong></p>
+  <br>
+  <p class="bullet-sub">Presented by: [Your Team Name]</p>
+  <p class="bullet-sub">Institution: [College/Organization Name]</p>
+  <p class="bullet-sub">Date: August 2026</p>
+  <div class="design-note">Design: Full-width dark background with glowing blue shield icon. Product name in large white bold text. Subtle animated particle/gradient recommended.</div>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide-box">
+  <span class="slide-number">2</span>
+  <span class="slide-title">The Problem We Solve</span>
+  <span class="slide-type">Problem Statement</span>
+  <br><br>
+  <div class="bullet-main">🚨 Pain Points Faced by Indian Retail &amp; Small Business Owners:</div>
+  <ul>
+    <li class="bullet-sub">📄 <strong>Manual invoice management</strong> — prone to errors, duplicates, fraud</li>
+    <li class="bullet-sub">📦 <strong>No real-time stock visibility</strong> — overstocking or running out of items</li>
+    <li class="bullet-sub">💸 <strong>Untracked expenses and poor cash flow control</strong></li>
+    <li class="bullet-sub">👥 <strong>Disconnected employee/salary management</strong></li>
+    <li class="bullet-sub">🧾 <strong>GST confusion and compliance risks</strong></li>
+    <li class="bullet-sub">🤖 <strong>No AI-powered business advice available for small stores</strong></li>
+    <li class="bullet-sub">🔐 <strong>Data leakage risk when multiple employees share the same system</strong></li>
+  </ul>
+  <div class="design-note">Design: 3-column icon card layout showing "Chaos Before Finora". Red warning icons per point. Left side: overwhelmed shopkeeper illustration.</div>
+  <div class="speaker-note">Speaker Note: "Today's small business owner is managing 5 different notebooks, WhatsApp messages, and spreadsheets. There's a better way."</div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide-box">
+  <span class="slide-number">3</span>
+  <span class="slide-title">Our Solution — Finora AI</span>
+  <span class="slide-type">Solution Overview</span>
+  <br><br>
+  <div class="bullet-main">✅ One Unified AI-Powered Business Platform</div>
+  <ul>
+    <li class="bullet-sub">An all-in-one web platform for financial management, built specifically for Indian retail</li>
+    <li class="bullet-sub">Combines <strong>OCR Invoice Scanning</strong>, <strong>Live Inventory Tracking</strong>, <strong>POS Billing</strong>, <strong>AI Analytics</strong>, and <strong>Automated Reporting</strong></li>
+    <li class="bullet-sub">Accessible from any device — desktop, tablet, or mobile browser</li>
+    <li class="bullet-sub">Designed for <strong>Business Owners</strong> and their <strong>Employees</strong> with controlled access</li>
+  </ul>
+  <br>
+  <div class="bullet-main">🎯 Core Value Proposition:</div>
+  <ul>
+    <li class="bullet-sub">🔍 <strong>Detect</strong> duplicate and fraudulent invoices automatically</li>
+    <li class="bullet-sub">📊 <strong>Analyze</strong> your business with 4 AI models in real-time</li>
+    <li class="bullet-sub">🤖 <strong>Automate</strong> reports and reminders to your workflow</li>
+    <li class="bullet-sub">🔐 <strong>Secure</strong> data isolation per business — no cross-shop leaks</li>
+  </ul>
+  <div class="design-note">Design: Split slide — Left: old way (cluttered icons), Right: Finora solution (clean cards, glowing AI icon). Central "vs" divider with animated transition.</div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide-box">
+  <span class="slide-number">4</span>
+  <span class="slide-title">Key Features at a Glance</span>
+  <span class="slide-type">Feature Overview</span>
+  <br><br>
+  <table>
+    <tr>
+      <th>Module</th><th>What It Does</th>
+    </tr>
+    <tr><td>🧾 OCR Invoice Scanner</td><td>Scan vendor bills with camera/upload — AI extracts all data automatically</td></tr>
+    <tr><td>📊 Business Dashboard</td><td>Live KPI cards: Revenue, Profit, Pending Bills, Stock Alerts</td></tr>
+    <tr><td>🛒 POS Billing System</td><td>Fast customer checkout with barcode scan, credit/paid modes</td></tr>
+    <tr><td>📦 Inventory Management</td><td>Real-time stock tracking, auto low-stock alerts, reorder suggestions</td></tr>
+    <tr><td>💰 Expense & P&amp;L Tracker</td><td>Record expenses, auto-deduct salaries, track net profit</td></tr>
+    <tr><td>👥 Employee Management</td><td>Add staff, assign roles, process salary with one click</td></tr>
+    <tr><td>🤖 AI Assistant (4 Models)</td><td>Finance, Inventory, Vendor, Fraud &amp; Growth advisors</td></tr>
+    <tr><td>📤 Automated Reports</td><td>2-day, weekly reports + reminders sent to your workflow app</td></tr>
+    <tr><td>🔐 Role-Based Security</td><td>Owner sees everything; employees see only what they need</td></tr>
+  </table>
+  <div class="design-note">Design: 3x3 feature icon grid with hover animations. Each tile has a colored icon + short headline. Use teal/navy alternating tile backgrounds.</div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide-box">
+  <span class="slide-number">5</span>
+  <span class="slide-title">Technology Stack</span>
+  <span class="slide-type">Technical Architecture</span>
+  <br><br>
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Why We Chose It</th></tr>
+    <tr><td>Frontend</td><td><span class="tag tag-tech">React 18</span> + <span class="tag tag-tech">Vite</span></td><td>Fast, modern UI with component-based architecture</td></tr>
+    <tr><td>Backend</td><td><span class="tag tag-tech">Node.js</span> + <span class="tag tag-tech">Express.js</span></td><td>Lightweight, fast REST API server for Indian bandwidth conditions</td></tr>
+    <tr><td>Database</td><td><span class="tag tag-tech">JSON DB</span> + <span class="tag tag-tech">Supabase</span></td><td>Local-first with cloud sync capability</td></tr>
+    <tr><td>AI Engine</td><td><span class="tag tag-ai">Groq API</span> — llama3-8b-8192</td><td>Ultra-fast inference, 4 specialized models</td></tr>
+    <tr><td>OCR</td><td><span class="tag tag-ai">Tesseract.js</span> + <span class="tag tag-ai">NVIDIA Vision AI</span></td><td>Dual-engine for high accuracy invoice scanning</td></tr>
+    <tr><td>Automation</td><td><span class="tag tag-biz">Webhooks</span> → SNS iHub</td><td>Real-time reports to existing business workflow tools</td></tr>
+  </table>
+  <br>
+  <div class="bullet-main">Architecture Diagram Flow:</div>
+  <p class="bullet-sub">Browser (React) → Express API (Node.js) → JSON Database → [Groq AI / Tesseract OCR / Supabase Cloud / Webhook Engine]</p>
+  <div class="design-note">Design: Layered architecture diagram. 5 horizontal bars stacked (Frontend → Backend → DB → AI → Webhook). Connected with animated flow arrows.</div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide-box">
+  <span class="slide-number">6</span>
+  <span class="slide-title">OCR Invoice Intelligence</span>
+  <span class="slide-type">Feature Deep Dive</span>
+  <br><br>
+  <div class="bullet-main">📸 How It Works — 4 Steps:</div>
+  <ul>
+    <li class="bullet-sub"><strong>Step 1 — Upload:</strong> Owner/staff takes a photo or uploads a scanned vendor bill (JPG/PNG/PDF)</li>
+    <li class="bullet-sub"><strong>Step 2 — Scan:</strong> Tesseract.js extracts raw text from the image using OCR</li>
+    <li class="bullet-sub"><strong>Step 3 — Parse:</strong> NVIDIA Vision AI structures the data — supplier name, invoice number, items, quantities, GST, total amount</li>
+    <li class="bullet-sub"><strong>Step 4 — Validate:</strong> System checks for duplicates in real-time. If duplicate found → flagged as HIGH RISK with an alert</li>
+  </ul>
+  <br>
+  <div class="bullet-main">🔴 Duplicate / Fraud Detection Logic:</div>
+  <ul>
+    <li class="bullet-sub">Check 1: Same invoice number already exists → Duplicate alert</li>
+    <li class="bullet-sub">Check 2: Same supplier + same amount (within ₹5 tolerance) → Duplicate alert</li>
+    <li class="bullet-sub">Fraud alert is auto-created and shown on the security dashboard</li>
+  </ul>
+  <div class="design-note">Design: Flow diagram with 4 step cards (camera → OCR text → JSON data → green/red check). Show before/after: blurry bill image → clean extracted table.</div>
+  <div class="speaker-note">Speaker Note: "We save the business owner from paying the same vendor twice — a common ₹50,000+ mistake in Indian SMEs."</div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide-box">
+  <span class="slide-number">7</span>
+  <span class="slide-title">AI Assistant — 4 Specialized Business Models</span>
+  <span class="slide-type">AI Feature Deep Dive</span>
+  <br><br>
+  <table>
+    <tr><th>AI Model</th><th>Name</th><th>What It Analyzes</th><th>Sample Query</th></tr>
+    <tr><td>💹 Finance</td><td>Finance Analyst</td><td>P&amp;L, cash flow, GST, tax optimization</td><td>"What is my profit margin this month?"</td></tr>
+    <tr><td>📦 Inventory</td><td>Stock Manager</td><td>Low stock, dead stock, reorder quantities</td><td>"Which items should I reorder this week?"</td></tr>
+    <tr><td>🏭 Vendor</td><td>Vendor Advisor</td><td>Supplier comparison, bulk pricing, history</td><td>"Which vendor gives me the best deal on oil?"</td></tr>
+    <tr><td>🚨 Fraud &amp; Growth</td><td>Growth Advisor</td><td>Security alerts, duplicate bills, marketing strategy</td><td>"How can I grow my sales by 20% next month?"</td></tr>
+  </table>
+  <br>
+  <div class="bullet-main">🔑 Key Technical Detail:</div>
+  <ul>
+    <li class="bullet-sub">Each model uses a <strong>separate Groq API key</strong> for isolation and quota management</li>
+    <li class="bullet-sub">Each AI receives <strong>live, real-time store data</strong> as context — not generic answers</li>
+    <li class="bullet-sub">If API unavailable, <strong>offline fallback</strong> provides data-based summary automatically</li>
+  </ul>
+  <div class="design-note">Design: 4 glowing cards in 2x2 grid. Each card has icon, model name, and 2-3 example questions. Neural network background animation behind the grid.</div>
+</div>
+
+<!-- SLIDE 8 -->
+<div class="slide-box">
+  <span class="slide-number">8</span>
+  <span class="slide-title">POS Billing & Customer Management</span>
+  <span class="slide-type">Feature Deep Dive</span>
+  <br><br>
+  <div class="bullet-main">🛒 Point of Sale System Features:</div>
+  <ul>
+    <li class="bullet-sub">Barcode scanner integration for instant item lookup</li>
+    <li class="bullet-sub">Cart management — add/remove items, auto-calculate subtotal + 18% GST</li>
+    <li class="bullet-sub">Two payment modes:
+      <ul>
+        <li><strong>💚 Paid Now</strong> — transaction recorded instantly as income</li>
+        <li><strong>🟡 Credit / Pending</strong> — bill saved with due date for later collection</li>
+      </ul>
+    </li>
+    <li class="bullet-sub">Generates numbered bill (e.g., BILL-482931) with customer details</li>
+  </ul>
+  <br>
+  <div class="bullet-main">📋 Pending Bills Manager:</div>
+  <ul>
+    <li class="bullet-sub">Dashboard shows live count of pending credit bills (clickable → opens full list)</li>
+    <li class="bullet-sub">Color-coded due dates — red (overdue), yellow (due within 3 days)</li>
+    <li class="bullet-sub">One-click "Settle Bill" updates status and records income transaction</li>
+  </ul>
+  <div class="design-note">Design: Split screen — Left: POS checkout mockup with cart items, Right: Pending bills list with colored due dates. Show bill creation animation.</div>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="slide-box">
+  <span class="slide-number">9</span>
+  <span class="slide-title">Role-Based Access Control — Security Architecture</span>
+  <span class="slide-type">Security Feature</span>
+  <br><br>
+  <div class="bullet-main">🔐 Strict Data Isolation — No Cross-Business Data Leakage</div>
+  <ul>
+    <li class="bullet-sub">Every database query is scoped to the owner's unique <strong>Shop ID</strong></li>
+    <li class="bullet-sub">Employees created by Business Owner A <strong>can ONLY see Shop A's data</strong></li>
+    <li class="bullet-sub">All API routes check both <strong>role permission</strong> AND <strong>shop ID</strong> before returning any data</li>
+  </ul>
+  <br>
+  <table>
+    <tr><th>Role</th><th>Dashboard Access</th><th>Can See Analytics?</th><th>Can Manage Staff?</th></tr>
+    <tr><td>🏢 Business Owner</td><td>Full — All Modules</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+    <tr><td>🛒 Cashier</td><td>POS, Pending Bills, Stock View</td><td>❌ No</td><td>❌ No</td></tr>
+    <tr><td>💼 Financier</td><td>Invoices, Expenses, Transactions</td><td>⚠️ Limited</td><td>❌ No</td></tr>
+    <tr><td>📦 Store Manager</td><td>Inventory, POS, Vendors</td><td>❌ No</td><td>❌ No</td></tr>
+    <tr><td>📒 Accountant</td><td>Transactions, Expenses, Reports</td><td>⚠️ Limited</td><td>❌ No</td></tr>
+  </table>
+  <div class="design-note">Design: Concentric circles or tree diagram showing Owner at center with branches for each role. Color-coded permissions matrix table.</div>
+</div>
+
+<!-- SLIDE 10 -->
+<div class="slide-box">
+  <span class="slide-number">10</span>
+  <span class="slide-title">Automated Reports & Webhook Integration</span>
+  <span class="slide-type">Automation Feature</span>
+  <br><br>
+  <div class="bullet-main">📤 4 One-Click Report Actions (Settings → App Preferences):</div>
+  <br>
+  <table>
+    <tr><th>Button</th><th>Action</th><th>Sent To</th></tr>
+    <tr><td>📊 Send 2-Day Report</td><td>Analyze last 48 hrs: sales, bills, alerts</td><td>Webhook URL (SNS iHub workflow)</td></tr>
+    <tr><td>📈 Weekly Report</td><td>7-day summary + Groq AI executive analysis</td><td>Webhook URL (SNS iHub workflow)</td></tr>
+    <tr><td>🔔 Send Reminders</td><td>Salary due, overdue customer bills, low stock alerts</td><td>Webhook URL (SNS iHub workflow)</td></tr>
+    <tr><td>🚀 Growth Advice</td><td>AI-generated 5 growth strategies for the store</td><td>Webhook URL + shown in AI module</td></tr>
+  </table>
+  <br>
+  <div class="bullet-main">⚡ How Webhooks Work:</div>
+  <ul>
+    <li class="bullet-sub">Each action compiles a structured JSON payload from live store data</li>
+    <li class="bullet-sub">Payload is POST-ed to the configured SNS iHub workflow URL</li>
+    <li class="bullet-sub">Business owner receives the report in their connected workflow tool (WhatsApp, Slack, Email, etc.)</li>
+  </ul>
+  <div class="design-note">Design: Flow diagram — Finora AI button click → JSON payload → webhook arrow → SNS iHub platform → notification on phone. Animated flow lines.</div>
+</div>
+
+<!-- SLIDE 11 -->
+<div class="slide-box">
+  <span class="slide-number">11</span>
+  <span class="slide-title">Employee & Salary Management</span>
+  <span class="slide-type">Feature Deep Dive</span>
+  <br><br>
+  <div class="bullet-main">👥 End-to-End Staff Management in Finora:</div>
+  <ul>
+    <li class="bullet-sub"><strong>Add Employee:</strong> Name, role, phone number, monthly salary, salary due date</li>
+    <li class="bullet-sub"><strong>Employee Login:</strong> Staff get their own login — scoped to only the owner's shop data</li>
+    <li class="bullet-sub"><strong>Salary Payout:</strong> One-click "Settle Salary" button — auto-creates expense record, transaction log, and payment history</li>
+    <li class="bullet-sub"><strong>Salary Reminders:</strong> Auto-alert generated 3 days before salary due date</li>
+    <li class="bullet-sub"><strong>Payment History:</strong> Full trail of all past salary payments per employee</li>
+  </ul>
+  <br>
+  <div class="bullet-main">📊 Impact on P&amp;L:</div>
+  <ul>
+    <li class="bullet-sub">Every salary payout is automatically deducted from profit — no manual expense entry needed</li>
+    <li class="bullet-sub">Transaction ledger shows each payout as an OUT entry with employee name</li>
+  </ul>
+  <div class="design-note">Design: Employee card UI mockup showing profile pic placeholder, name, role, salary amount, and settle button. Next to it: payment history timeline.</div>
+</div>
+
+<!-- SLIDE 12 -->
+<div class="slide-box">
+  <span class="slide-number">12</span>
+  <span class="slide-title">Live Business Dashboard — KPI Overview</span>
+  <span class="slide-type">UI Demo Slide</span>
+  <br><br>
+  <div class="bullet-main">📊 4 Live KPI Cards (Updated from Real Database):</div>
+  <ul>
+    <li class="bullet-sub">💚 <strong>Profit &amp; Loss</strong> — Net profit calculated as Sales − Expenses − Salaries</li>
+    <li class="bullet-sub">💰 <strong>Revenue (Money In)</strong> — Total paid customer sales from POS system</li>
+    <li class="bullet-sub">🟡 <strong>Pending Credit Bills</strong> — Count + amount of customer credit bills awaiting payment (clickable → Pending Bills page)</li>
+    <li class="bullet-sub">🔴 <strong>Money Out (Vendor Bills)</strong> — Total vendor invoice expenses</li>
+  </ul>
+  <br>
+  <div class="bullet-main">Additional Dashboard Widgets:</div>
+  <ul>
+    <li class="bullet-sub">📉 Revenue vs Expenses interactive chart</li>
+    <li class="bullet-sub">📦 Top 3 lowest stock items</li>
+    <li class="bullet-sub">🚨 AI Intelligence Feed (fraud alerts, GST compliance status)</li>
+    <li class="bullet-sub">⚡ Quick Actions — Upload Invoice, Create Bill, Add Employee, Generate Report</li>
+    <li class="bullet-sub">👥 Recent activity log — all changes with timestamps</li>
+  </ul>
+  <div class="design-note">Design: Use actual screenshot of the dashboard if available. Alternatively create a clean mockup with dark theme, 4 colored KPI cards at top, chart below.</div>
+</div>
+
+<!-- SLIDE 13 -->
+<div class="slide-box">
+  <span class="slide-number">13</span>
+  <span class="slide-title">Target Market & Use Cases</span>
+  <span class="slide-type">Market Fit</span>
+  <br><br>
+  <div class="bullet-main">🎯 Primary Target Users:</div>
+  <ul>
+    <li class="bullet-sub">🏪 <strong>Kirana Stores &amp; Supermarkets</strong> — 1–10 employees, ₹5L–₹50L monthly turnover</li>
+    <li class="bullet-sub">🛒 <strong>FMCG Distributors &amp; Wholesale Shops</strong> — high vendor bill volume, need duplicate detection</li>
+    <li class="bullet-sub">🍲 <strong>Restaurants &amp; Food Businesses</strong> — daily POS billing, inventory tracking</li>
+    <li class="bullet-sub">🧴 <strong>Pharmacy &amp; Medical Stores</strong> — strict inventory tracking, GST compliance</li>
+    <li class="bullet-sub">👗 <strong>Fashion Retail &amp; Boutiques</strong> — POS billing, vendor management</li>
+  </ul>
+  <br>
+  <div class="bullet-main">📈 Market Size:</div>
+  <ul>
+    <li class="bullet-sub">63 million+ MSMEs in India (Ministry of MSME, 2024)</li>
+    <li class="bullet-sub">Only 14% use any form of digital accounting software</li>
+    <li class="bullet-sub">Opportunity: 54 million unserved businesses in India</li>
+  </ul>
+  <div class="design-note">Design: India map with business category icons pinned across it. Market size numbers in large bold counters. Pie chart showing 14% served vs 86% unserved.</div>
+</div>
+
+<!-- SLIDE 14 -->
+<div class="slide-box">
+  <span class="slide-number">14</span>
+  <span class="slide-title">Competitive Advantage</span>
+  <span class="slide-type">Differentiation</span>
+  <br><br>
+  <table>
+    <tr><th>Feature</th><th>Finora AI</th><th>Tally</th><th>Vyapar</th><th>Zoho Books</th></tr>
+    <tr><td>AI Chat Assistant</td><td>✅ 4 Specialized Models</td><td>❌</td><td>❌</td><td>⚠️ Basic</td></tr>
+    <tr><td>OCR Invoice Scanning</td><td>✅ AI-Powered</td><td>❌</td><td>⚠️ Limited</td><td>✅</td></tr>
+    <tr><td>Duplicate Bill Detection</td><td>✅ Auto + Alerts</td><td>❌</td><td>❌</td><td>❌</td></tr>
+    <tr><td>Webhook Automation</td><td>✅ Built-In</td><td>❌</td><td>❌</td><td>✅</td></tr>
+    <tr><td>Role-Based Employee Access</td><td>✅ 5 Roles</td><td>⚠️ Basic</td><td>⚠️ Basic</td><td>✅</td></tr>
+    <tr><td>Indian FMCG Focus</td><td>✅ Designed for it</td><td>⚠️</td><td>✅</td><td>⚠️</td></tr>
+    <tr><td>Cost (SME-friendly)</td><td>✅ Low</td><td>❌ Expensive</td><td>✅</td><td>❌</td></tr>
+  </table>
+  <div class="design-note">Design: Feature comparison table with green checkmarks, red X marks, yellow warnings. Finora AI column highlighted in teal/blue background.</div>
+  <div class="speaker-note">Speaker Note: "The biggest gap in existing tools is AI-powered advice. Finora gives every small shopkeeper a personal financial advisor in their pocket."</div>
+</div>
+
+<!-- SLIDE 15 -->
+<div class="slide-box">
+  <span class="slide-number">15</span>
+  <span class="slide-title">System Demo Flow</span>
+  <span class="slide-type">Live Demo / Screenshots</span>
+  <br><br>
+  <div class="bullet-main">🎬 Recommended Demo Sequence (5-minute walkthrough):</div>
+  <br>
+  <table>
+    <tr><th>#</th><th>Step</th><th>What to Show</th></tr>
+    <tr><td>1</td><td>Login as Business Owner</td><td>Owner dashboard — KPI cards, notifications, quick actions</td></tr>
+    <tr><td>2</td><td>Upload Vendor Invoice</td><td>Upload image → OCR scan → data extracted → duplicate check result</td></tr>
+    <tr><td>3</td><td>POS Billing</td><td>Search item → add to cart → checkout → credit mode → pending bill created</td></tr>
+    <tr><td>4</td><td>Pending Bills</td><td>Click KPI card → goes to pending bills → settle one bill → transaction created</td></tr>
+    <tr><td>5</td><td>AI Assistant</td><td>Type: "What are my top 3 growth opportunities?" → AI responds with store-specific advice</td></tr>
+    <tr><td>6</td><td>Settings → Reports</td><td>Click "Send Reminders" → shows loading → success + reminder sent to webhook</td></tr>
+    <tr><td>7</td><td>Login as Employee</td><td>Show restricted view — only POS and stock, no owner analytics visible</td></tr>
+  </table>
+  <div class="design-note">Design: Screenshot carousel of each step. Use screenshot highlight boxes (red circle or arrow) to point to key UI elements.</div>
+</div>
+
+<!-- SLIDE 16 -->
+<div class="slide-box">
+  <span class="slide-number">16</span>
+  <span class="slide-title">Future Roadmap</span>
+  <span class="slide-type">Roadmap Slide</span>
+  <br><br>
+  <div class="bullet-main">🚀 Phase 2 — Next 6 Months:</div>
+  <ul>
+    <li class="bullet-sub">📱 Mobile App (Android + iOS) — React Native port of the web platform</li>
+    <li class="bullet-sub">🧾 GST Auto-Filing — Direct integration with GSTN portal for 1-click returns</li>
+    <li class="bullet-sub">💬 WhatsApp Bot — Receive reports and send commands via WhatsApp Business API</li>
+    <li class="bullet-sub">🏦 UPI Payment Integration — Direct settlement of pending bills via UPI links</li>
+    <li class="bullet-sub">📊 Multi-Branch Support — Manage multiple store locations under one owner account</li>
+  </ul>
+  <br>
+  <div class="bullet-main">🌐 Phase 3 — Year 2:</div>
+  <ul>
+    <li class="bullet-sub">Predictive AI Demand Forecasting — auto-suggest order quantities before festive seasons</li>
+    <li class="bullet-sub">Supplier Marketplace — compare and order from vetted suppliers directly</li>
+    <li class="bullet-sub">B2B Invoice Financing — connect pending bills to NBFCs for working capital</li>
+  </ul>
+  <div class="design-note">Design: Horizontal timeline with Phase 1 (now), Phase 2 (6 months), Phase 3 (Year 2). Each phase as a milestone node with icons above.</div>
+</div>
+
+<!-- SLIDE 17 -->
+<div class="slide-box">
+  <span class="slide-number">17</span>
+  <span class="slide-title">Team & Acknowledgements</span>
+  <span class="slide-type">Team Slide</span>
+  <br><br>
+  <div class="bullet-main">👨‍💻 Project Team:</div>
+  <p class="bullet-sub">[Add team member names, roles, and photos here]</p>
+  <br>
+  <div class="bullet-main">🙏 Technologies & Partners:</div>
+  <ul>
+    <li class="bullet-sub">Groq AI — Ultra-fast LLM inference API (4 AI models)</li>
+    <li class="bullet-sub">Tesseract.js — Open source OCR engine</li>
+    <li class="bullet-sub">NVIDIA AI Foundation — Vision language model for invoice parsing</li>
+    <li class="bullet-sub">Supabase — Open source PostgreSQL cloud database</li>
+    <li class="bullet-sub">SNS iHub — Workflow automation platform for webhooks</li>
+    <li class="bullet-sub">React + Vite + Express.js — Core web framework stack</li>
+  </ul>
+  <div class="design-note">Design: Photo grid for team members. Logo strip for all technology partners at the bottom.</div>
+</div>
+
+<!-- SLIDE 18 -->
+<div class="slide-box">
+  <span class="slide-number">18</span>
+  <span class="slide-title">Thank You & Q&A</span>
+  <span class="slide-type">Closing Slide</span>
+  <br><br>
+  <div style="text-align:center; padding: 20px;">
+    <div style="font-size:28pt; font-weight:bold; color:#0f3460;">🛡️ FINORA AI</div>
+    <p style="font-size:14pt; color:#e94560; font-weight:bold;">"From Invoices to Insights — All in One Place"</p>
+    <br>
+    <p style="font-size:12pt;"><strong>GitHub / Demo URL:</strong> [Add your project link]</p>
+    <p style="font-size:12pt;"><strong>Contact:</strong> [Add email/phone]</p>
+    <br>
+    <p style="font-size:20pt; color:#0f3460; font-weight:bold;">🙋 Questions Welcome!</p>
+  </div>
+  <div class="design-note">Design: Full-screen dark background with centered logo. Animated particle background. QR code for live demo link. "Thank You" in large text. Team photo strip at bottom.</div>
+</div>
+
+<div class="divider">― ◆ ―</div>
+
+<!-- APPENDIX -->
+<h1>📎 Appendix — Additional Talking Points</h1>
+
+<h3>Frequently Asked Questions (For Q&amp;A Prep)</h3>
+<table>
+  <tr><th>Question</th><th>Suggested Answer</th></tr>
+  <tr><td>Is the data secure?</td><td>Yes. Each business owner's data is strictly isolated using a unique shop ID. Employees from one shop cannot access another shop's data. All routes validate both role and shop identity.</td></tr>
+  <tr><td>What happens if AI API is offline?</td><td>Finora has a built-in offline fallback that generates a data-based summary from real-time store data without requiring the AI API — so the system always works.</td></tr>
+  <tr><td>How does OCR accuracy compare to manual entry?</td><td>The dual-engine approach (Tesseract + NVIDIA) achieves ~90%+ accuracy. Extracted data is shown to the user for review before saving, ensuring no data is saved blindly.</td></tr>
+  <tr><td>Can it integrate with existing accounting software?</td><td>Via webhooks, any data from Finora can be sent to external systems including Tally, ERP, or any tool that accepts HTTP POST payloads.</td></tr>
+  <tr><td>How many employees can be added?</td><td>Unlimited. Each employee gets their own login and automatically sees only their assigned shop's data.</td></tr>
+  <tr><td>Does it support multiple shops?</td><td>Currently one shop per owner account. Multi-branch support is planned in Phase 2.</td></tr>
+</table>
+
+<h3>Key Numbers for the Presentation</h3>
+<ul>
+  <li>13 Backend API routes covering all business functions</li>
+  <li>37+ API service functions in the frontend</li>
+  <li>4 specialized AI models for different business domains</li>
+  <li>5 user roles with granular permissions</li>
+  <li>12 database tables tracking all business data</li>
+  <li>4 automated report types sent to webhook</li>
+  <li>2 OCR engines for high-accuracy invoice scanning</li>
+  <li>100% tenant data isolation — no cross-business data access</li>
+</ul>
+
+<hr>
+<p style="text-align:center; color:#888; font-size:9pt; margin-top:30px;">
+  Finora AI — PPT Content Guide | SNS Cohart 2026 | Confidential &amp; Proprietary
+</p>
+</body>
+</html>

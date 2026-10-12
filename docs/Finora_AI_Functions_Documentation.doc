@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Finora AI - Complete Functions Documentation</title>
+<style>
+  body { font-family: 'Calibri', Arial, sans-serif; font-size: 11pt; color: #1a1a2e; margin: 40px; line-height: 1.6; }
+  h1 { font-size: 22pt; color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 8px; margin-top: 30px; }
+  h2 { font-size: 16pt; color: #16213e; background: #eaf0fb; padding: 8px 14px; border-left: 5px solid #0f3460; margin-top: 28px; }
+  h3 { font-size: 13pt; color: #0f3460; margin-top: 20px; }
+  h4 { font-size: 11pt; color: #e94560; margin-top: 14px; margin-bottom: 4px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 20px 0; font-size: 10pt; }
+  th { background: #0f3460; color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border: 1px solid #d0d7e6; vertical-align: top; }
+  tr:nth-child(even) { background: #f5f7fc; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 9pt; font-weight: bold; }
+  .owner { background: #fff3cd; color: #856404; }
+  .all { background: #d1e7dd; color: #0a5233; }
+  .cashier { background: #d3f4f1; color: #0c4e47; }
+  .method-get { background: #d1ecf1; color: #0c5460; font-weight: bold; }
+  .method-post { background: #d4edda; color: #155724; font-weight: bold; }
+  .method-put { background: #fff3cd; color: #856404; font-weight: bold; }
+  .method-delete { background: #f8d7da; color: #721c24; font-weight: bold; }
+  .cover { text-align: center; margin: 60px 0 40px 0; border: 2px solid #0f3460; padding: 40px; border-radius: 8px; background: #f0f4ff; }
+  .cover h1 { border: none; font-size: 28pt; }
+  .cover p { font-size: 13pt; color: #444; }
+  .toc { background: #f8f9ff; border: 1px solid #c5d0e8; padding: 20px 30px; margin: 20px 0; border-radius: 6px; }
+  .toc ol { font-size: 11pt; line-height: 2; }
+  code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 10pt; }
+  p { margin: 6px 0; }
+  .note { background: #fff3cd; border-left: 4px solid #ffc107; padding: 8px 14px; margin: 10px 0; }
+  hr { border: none; border-top: 1px solid #d0d7e6; margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>🛡️ FINORA AI</h1>
+  <h2 style="border:none;background:none;color:#0f3460;">Financial Intelligence & Business Management Platform</h2>
+  <p><strong>Complete Functions & Features Documentation</strong></p>
+  <p>Version 1.0 &nbsp;|&nbsp; August 2026</p>
+  <p>Prepared by: Development Team &nbsp;|&nbsp; SNS Cohart</p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h3 style="margin-top:0;">📋 Table of Contents</h3>
+  <ol>
+    <li>System Architecture Overview</li>
+    <li>Authentication Module (Login / Signup)</li>
+    <li>Dashboard Overview & KPI Engine</li>
+    <li>Vendor Invoice Management (OCR + Manual)</li>
+    <li>Inventory & Stock Management</li>
+    <li>Customer POS Billing System</li>
+    <li>Pending Bills Manager</li>
+    <li>Expense Tracker</li>
+    <li>Transaction Ledger</li>
+    <li>Employee Management & Salary Payout</li>
+    <li>Vendor/Supplier Directory</li>
+    <li>AI Assistant (4 Specialized Models)</li>
+    <li>Automated Reports & Webhook Engine</li>
+    <li>Settings & Configuration</li>
+    <li>Role-Based Access Control (RBAC)</li>
+    <li>Frontend Pages & Components</li>
+    <li>Database Structure</li>
+    <li>API Services Summary</li>
+  </ol>
+</div>
+
+<hr>
+
+<!-- SECTION 1 -->
+<h1>1. System Architecture Overview</h1>
+<table>
+  <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+  <tr><td>Frontend</td><td>React 18 + Vite</td><td>Single-page application, dashboards, interactive UI</td></tr>
+  <tr><td>Backend</td><td>Node.js + Express.js</td><td>REST API server, business logic, data persistence</td></tr>
+  <tr><td>Database</td><td>Local JSON (data.json) + Supabase (cloud sync)</td><td>All business data storage scoped by shop ID</td></tr>
+  <tr><td>AI Engine</td><td>Groq API (llama3-8b-8192)</td><td>4 specialized AI assistant models</td></tr>
+  <tr><td>OCR Engine</td><td>Tesseract.js + NVIDIA Vision AI</td><td>Vendor invoice scan &amp; data extraction</td></tr>
+  <tr><td>Webhooks</td><td>HTTP POST to external workflow URLs</td><td>Automated reports &amp; alerts to SNS iHub platform</td></tr>
+  <tr><td>Authentication</td><td>Header-based RBAC (x-user-role, x-shop-id)</td><td>Tenant isolation &amp; role enforcement</td></tr>
+</table>
+
+<h3>Key Architecture Principles</h3>
+<p>• <strong>Tenant Isolation:</strong> Every database query is scoped to <code>req.shopId</code> to prevent cross-shop data leakage.</p>
+<p>• <strong>Role-Based Access:</strong> All sensitive routes use <code>requireRoles()</code> middleware before processing.</p>
+<p>• <strong>Single Source of Truth:</strong> All modules read from the same backend API — no stale localStorage data inconsistencies.</p>
+
+<hr>
+
+<!-- SECTION 2 -->
+<h1>2. Authentication Module</h1>
+<p><strong>File:</strong> <code>backend/routes/auth.js</code></p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Description</th></tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/auth/login</code></td>
+    <td><strong>User Login</strong></td>
+    <td>Accepts userId/email/mobile + password. Searches users table and returns full user profile including role and owner_id. Supports Business Owner and Employee login from the same endpoint.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/auth/signup</code></td>
+    <td><strong>New Account Registration</strong></td>
+    <td>Creates a new Business Owner or Employee account. Auto-generates unique user ID (OWNER-XXXX for owners, EMP-XXXX for employees). Validates for duplicate mobile number or email. Stores hashed password.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-get">GET</span></td>
+    <td><code>/api/auth/users</code></td>
+    <td><strong>List All Users</strong></td>
+    <td>Returns sanitized user list (no password_hash). Used by the dashboard to populate employee/user dropdowns and verify accounts.</td>
+  </tr>
+</table>
+
+<h4>Frontend Functions (LoginPage.jsx / SignupPage.jsx)</h4>
+<table>
+  <tr><th>Function Name</th><th>Purpose</th></tr>
+  <tr><td><code>handleLogin()</code></td><td>Validates form, calls <code>apiLogin()</code>, stores user session in localStorage, routes to dashboard by role.</td></tr>
+  <tr><td><code>handleSignup()</code></td><td>Collects business owner registration data, calls <code>apiSignup()</code>, auto-redirects after success.</td></tr>
+  <tr><td><code>handleRoleToggle()</code></td><td>Switches login form between Business Owner and Employee modes.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 3 -->
+<h1>3. Dashboard Overview & KPI Engine</h1>
+<p><strong>Files:</strong> <code>backend/routes/dashboard.js</code>, <code>frontend/src/pages/BusinessOwnerDashboard.jsx</code> (OverviewModule)</p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Description</th></tr>
+  <tr>
+    <td><span class="badge method-get">GET</span></td>
+    <td><code>/api/dashboard/stats</code></td>
+    <td><strong>Live KPI Statistics</strong></td>
+    <td>Computes real-time KPIs from live database: total invoice value, GST claimable, low stock count, high-risk invoices, active fraud alerts, pending customer bills count &amp; amount. All data scoped to shop's owner ID.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-get">GET</span></td>
+    <td><code>/api/dashboard/notifications</code></td>
+    <td><strong>Live Notifications Feed</strong></td>
+    <td>Returns fraud alerts + auto-generated salary due reminders (3 days before salary date). Employees near salary date trigger automatic MEDIUM severity notifications.</td>
+  </tr>
+</table>
+
+<h4>OverviewModule Frontend Functions</h4>
+<table>
+  <tr><th>Function / State</th><th>Purpose</th></tr>
+  <tr><td><code>useEffect → apiGetDashboardStats()</code></td><td>Fetches live KPI data from backend on mount and populates all 4 KPI cards.</td></tr>
+  <tr><td><code>livePendingBillsCount / livePendingBillsAmount</code></td><td>Reads pending customer credit bills from backend stats (same source as PendingBillsModule — no mismatch).</td></tr>
+  <tr><td><code>Pending Bills KPI Card onClick</code></td><td>Clickable card that navigates user directly to the Pending Bills page using <code>onNavigate('pending_bills')</code>.</td></tr>
+  <tr><td><code>processStock()</code></td><td>Deduplicates and aggregates stock items from multiple sources (Supabase, backend API, localStorage) and renders top 3 lowest-stock items.</td></tr>
+  <tr><td><code>setFraudFeedAlerts()</code></td><td>Compiles security alerts from duplicate bill detection and pending payment flags for the AI Intelligence Feed widget.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 4 -->
+<h1>4. Vendor Invoice Management (OCR + Manual Entry)</h1>
+<p><strong>Files:</strong> <code>backend/routes/invoices.js</code>, <code>frontend/src/pages/UploadInvoiceFullPage.jsx</code>, <code>frontend/src/pages/CreateInvoiceFullPage.jsx</code></p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Description</th></tr>
+  <tr>
+    <td><span class="badge method-get">GET</span></td>
+    <td><code>/api/invoices</code></td>
+    <td><strong>Get All Invoices</strong></td>
+    <td>Returns all vendor/supplier invoices for the authenticated shop. Accessible by owner, financier, cashier roles.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/invoices</code></td>
+    <td><strong>Create Manual Invoice</strong></td>
+    <td>Manually create a new vendor bill. Auto-runs duplicate detection. If duplicate found, flags as High Risk and creates a fraud alert. Auto-updates inventory stock if item list provided.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/invoices/upload</code></td>
+    <td><strong>Save OCR-Extracted Invoice</strong></td>
+    <td>Saves AI-parsed invoice data extracted from scanned images. Runs duplicate check, updates inventory automatically.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/invoices/scan-file</code></td>
+    <td><strong>OCR Image Scanning</strong></td>
+    <td>Accepts uploaded image (JPG/PNG/PDF). Uses Tesseract.js for OCR text extraction followed by NVIDIA Vision AI for structured data parsing (supplier, invoice number, items, totals). Returns extracted JSON.</td>
+  </tr>
+</table>
+
+<h4>Key Helper Functions (invoices.js)</h4>
+<table>
+  <tr><th>Function</th><th>Purpose</th></tr>
+  <tr><td><code>normalizeInvoiceNo(no)</code></td><td>Strips special characters and lowercases invoice numbers for consistent duplicate matching.</td></tr>
+  <tr><td><code>normalizeName(str)</code></td><td>Normalizes supplier names for fuzzy duplicate detection.</td></tr>
+  <tr><td><code>checkDuplicateInDb()</code></td><td>Runs 2-step duplicate check: (1) exact invoice number match, (2) same supplier + same grand total within ₹5 tolerance. Returns isDuplicate flag and reason.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 5 -->
+<h1>5. Inventory & Stock Management</h1>
+<p><strong>File:</strong> <code>backend/routes/inventory.js</code>, <code>frontend/src/components/dashboard/InventoryReadOnlyModule.jsx</code></p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Access</th></tr>
+  <tr><td><span class="badge method-get">GET</span></td><td><code>/api/inventory</code></td><td><strong>View All Stock</strong></td><td><span class="badge all">All Roles</span></td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/inventory</code></td><td><strong>Add New SKU</strong></td><td><span class="badge owner">Owner / Store Manager</span></td></tr>
+  <tr><td><span class="badge method-put">PUT</span></td><td><code>/api/inventory/:id</code></td><td><strong>Update Stock Item</strong></td><td><span class="badge owner">Owner / Store Manager</span></td></tr>
+  <tr><td><span class="badge method-delete">DELETE</span></td><td><code>/api/inventory/:id</code></td><td><strong>Delete SKU</strong></td><td><span class="badge owner">Owner Only</span></td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/inventory/webhook/trigger</code></td><td><strong>Trigger Stock Webhook Event</strong></td><td><span class="badge all">All</span></td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/inventory/webhook/stock-updates</code></td><td><strong>Secondary Webhook Listener</strong></td><td><span class="badge all">All</span></td></tr>
+  <tr><td><span class="badge method-get">GET</span></td><td><code>/api/inventory/webhook/logs</code></td><td><strong>Webhook Event Logs</strong></td><td><span class="badge all">All</span></td></tr>
+</table>
+
+<p>When a new item is added or updated, stock status auto-updates: <strong>Low Stock Alert</strong> (if qty ≤ threshold) or <strong>Healthy Stock</strong>. Every change creates an audit log entry.</p>
+<p>Stock is automatically adjusted when vendor invoices are saved — items in the invoice are matched and quantity is added to existing inventory records.</p>
+
+<hr>
+
+<!-- SECTION 6 -->
+<h1>6. Customer POS Billing System</h1>
+<p><strong>Files:</strong> <code>backend/routes/customer_bills.js</code>, <code>frontend/src/components/dashboard/PosBillingModule.jsx</code></p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Description</th></tr>
+  <tr>
+    <td><span class="badge method-get">GET</span></td>
+    <td><code>/api/customer-bills</code></td>
+    <td><strong>Get All Customer Bills</strong></td>
+    <td>Returns all POS bills for the shop (Paid + Pending). Filtered strictly by shop ID.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/customer-bills</code></td>
+    <td><strong>Create New POS Bill</strong></td>
+    <td>Creates a customer sale bill. Supports two payment modes: (1) <strong>Paid</strong> — immediately creates a transaction ledger entry as income; (2) <strong>Pending Payment (Credit)</strong> — bill saved for later collection with optional due date.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-put">PUT</span></td>
+    <td><code>/api/customer-bills/:id/pay</code></td>
+    <td><strong>Mark Bill as Paid</strong></td>
+    <td>Settles a pending customer credit bill. Creates transaction record (income), writes audit log. Triggers webhook event for stock deduction tracking.</td>
+  </tr>
+</table>
+
+<h4>POS Frontend Functions (PosBillingModule.jsx)</h4>
+<table>
+  <tr><th>Function</th><th>Purpose</th></tr>
+  <tr><td><code>handleAddItem()</code></td><td>Searches inventory and adds items to the current sale cart.</td></tr>
+  <tr><td><code>calculateTotals()</code></td><td>Auto-computes subtotal, GST (18%), grand total from cart items.</td></tr>
+  <tr><td><code>handleCheckout()</code></td><td>Submits the sale, supports Paid/Credit modes, triggers stock webhook.</td></tr>
+  <tr><td><code>handleBarcodeScan()</code></td><td>Processes barcode input to auto-populate item details from inventory.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 7 -->
+<h1>7. Pending Bills Manager</h1>
+<p><strong>Location:</strong> Within <code>BusinessOwnerDashboard.jsx</code> (PendingBillsModule function)</p>
+
+<table>
+  <tr><th>Feature</th><th>Description</th></tr>
+  <tr><td><strong>View Pending Bills</strong></td><td>Fetches all customer bills with status "Pending" or "Pending Payment (Credit)" from backend API.</td></tr>
+  <tr><td><strong>Settle Bill</strong></td><td>Calls <code>PUT /api/customer-bills/:id/pay</code> to mark bill as paid, creating a transaction entry.</td></tr>
+  <tr><td><strong>Due Date Display</strong></td><td>Shows color-coded due date (red if overdue, yellow if due within 3 days).</td></tr>
+  <tr><td><strong>Dashboard Card Link</strong></td><td>The "Pending Credit Bills" KPI card on the main dashboard is clickable and navigates to this page. Count shown matches exactly what this page shows.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 8 -->
+<h1>8. Expense Tracker</h1>
+<p><strong>File:</strong> <code>backend/routes/expenses.js</code></p>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th></tr>
+  <tr><td><span class="badge method-get">GET</span></td><td><code>/api/expenses</code></td><td>Retrieve all shop expenses filtered by shop ID</td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/expenses</code></td><td>Record a new business expense (rent, utilities, etc.)</td></tr>
+</table>
+<p>Salary payouts automatically create expense records (category: "Staff Salary") ensuring P&amp;L accuracy.</p>
+
+<hr>
+
+<!-- SECTION 9 -->
+<h1>9. Transaction Ledger</h1>
+<p><strong>File:</strong> <code>backend/routes/transactions.js</code></p>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th></tr>
+  <tr><td><span class="badge method-get">GET</span></td><td><code>/api/transactions</code></td><td>Full transaction ledger — all IN and OUT entries for the shop</td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/transactions</code></td><td>Create a manual transaction entry</td></tr>
+</table>
+<p>Transactions are auto-created for: POS paid sales (IN), salary payouts (OUT), pending bill settlements (IN).</p>
+
+<hr>
+
+<!-- SECTION 10 -->
+<h1>10. Employee Management & Salary Payout</h1>
+<p><strong>File:</strong> <code>backend/routes/employees.js</code></p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Description</th></tr>
+  <tr>
+    <td><span class="badge method-get">GET</span></td>
+    <td><code>/api/employees</code></td>
+    <td><strong>List Employees</strong></td>
+    <td>Returns all employees of the shop. Owner-only endpoint.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/employees</code></td>
+    <td><strong>Add Employee</strong></td>
+    <td>Creates a new employee record with name, role, phone, salary amount, and salary due date. Also creates the matching login account (via signup).</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-delete">DELETE</span></td>
+    <td><code>/api/employees/:id</code></td>
+    <td><strong>Remove Employee</strong></td>
+    <td>Deletes an employee record from the shop database.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-put">PUT</span></td>
+    <td><code>/api/employees/:id/pay-salary</code></td>
+    <td><strong>Process Salary Payout</strong></td>
+    <td>Marks salary as paid for the month. Creates: (1) expense record for P&amp;L, (2) transaction OUT record, (3) payment history entry, (4) audit log. Updates employee payment_status to Paid.</td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Employees are always data-isolated — they can only see data from their owner's shop. Salary reminders are auto-generated 3 days before the salary due date.
+</div>
+
+<hr>
+
+<!-- SECTION 11 -->
+<h1>11. Vendor / Supplier Directory</h1>
+<p><strong>File:</strong> <code>backend/routes/vendors.js</code></p>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th></tr>
+  <tr><td><span class="badge method-get">GET</span></td><td><code>/api/vendors</code></td><td>List all registered vendors/suppliers for the shop</td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/vendors</code></td><td>Add a new vendor to the directory</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 12 -->
+<h1>12. AI Assistant — 4 Specialized Models</h1>
+<p><strong>File:</strong> <code>backend/routes/ai.js</code>, <code>frontend/src/components/dashboard/AiAssistantModule.jsx</code></p>
+<p>All 4 models use the <strong>Groq API (llama3-8b-8192)</strong> with different API keys and system prompts. Each model receives live store data as real-time context.</p>
+
+<table>
+  <tr><th>Model</th><th>Assistant Name</th><th>API Key Env Var</th><th>Specialization</th></tr>
+  <tr><td><strong>finance</strong></td><td>Finance Analyst</td><td><code>GROQ_API_KEY_FINANCE</code></td><td>P&amp;L analysis, cash flow, GST guidance, cost optimization, tax advisory.</td></tr>
+  <tr><td><strong>inventory</strong></td><td>Stock Manager</td><td><code>GROQ_API_KEY_INVENTORY</code></td><td>Stock level analysis, reorder predictions, dead stock identification, supplier suggestions.</td></tr>
+  <tr><td><strong>vendor</strong></td><td>Vendor Advisor</td><td><code>GROQ_API_KEY_VENDOR</code></td><td>Vendor comparison, bulk discount recommendations, purchase history analysis.</td></tr>
+  <tr><td><strong>fraud_growth</strong></td><td>Fraud &amp; Growth AI</td><td><code>GROQ_API_KEY_FRAUD_GROWTH</code></td><td>Fraud detection alerts, duplicate bill analysis, business growth strategies, marketing advice.</td></tr>
+</table>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th></tr>
+  <tr><td><span class="badge method-get">GET</span></td><td><code>/api/ai/insights</code></td><td>Returns pre-computed AI insights (financial, stock, recommendations, compliance). Owner only.</td></tr>
+  <tr><td><span class="badge method-post">POST</span></td><td><code>/api/ai/chat</code></td><td>Conversational AI endpoint. Accepts query, companyName, assistantType. Routes to correct Groq model. Falls back to offline analysis if API unavailable.</td></tr>
+</table>
+
+<h4>Key Backend Function: <code>getStoreContextData(shopId)</code></h4>
+<p>Computes comprehensive real-time store metrics passed to AI as context:</p>
+<p>Total Sales Revenue | Total Expenses | Estimated Profit | Net Margin | Stock Valuation | Low Stock Items | Recent Transactions | Vendor List</p>
+
+<hr>
+
+<!-- SECTION 13 -->
+<h1>13. Automated Reports & Webhook Engine</h1>
+<p><strong>File:</strong> <code>backend/routes/reports.js</code></p>
+<p>All 4 endpoints analyze live store data and POST structured JSON payloads to <code>WEBHOOK_URL_1</code> configured in <code>backend/.env</code>.</p>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Function</th><th>Description</th></tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/reports/send-daily</code></td>
+    <td><strong>2-Day Activity Report</strong></td>
+    <td>Analyzes all transactions, sales, and alerts from the past 48 hours. Sends summary including sales total, bills raised, pending bills, low stock alerts, and recent transaction list to webhook.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/reports/send-weekly</code></td>
+    <td><strong>Weekly Performance Report</strong></td>
+    <td>7-day analysis of sales, expenses, and profit. Calls Groq Finance AI model to generate a 3-4 bullet executive summary. Sends combined report with AI insights to webhook.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/reports/send-reminders</code></td>
+    <td><strong>Business Reminders</strong></td>
+    <td>Compiles three types of reminders: (1) Salary payments due within 5 days, (2) Outstanding customer credit bills, (3) Low stock items below threshold. Sends prioritized reminder list to webhook.</td>
+  </tr>
+  <tr>
+    <td><span class="badge method-post">POST</span></td>
+    <td><code>/api/reports/growth-advice</code></td>
+    <td><strong>AI Growth Advisory</strong></td>
+    <td>Uses Groq Fraud &amp; Growth AI model to analyze store snapshot and generate 5 specific, data-backed business growth strategies. Sends AI advice + store snapshot to webhook.</td>
+  </tr>
+</table>
+
+<h4>Key Helper Functions (reports.js)</h4>
+<table>
+  <tr><th>Function</th><th>Purpose</th></tr>
+  <tr><td><code>getFullStoreContext(shopId)</code></td><td>Returns complete store data: sales, expenses, pending bills, low stock, salary due employees, vendor count — all scoped to shopId.</td></tr>
+  <tr><td><code>filterByDays(items, daysBack)</code></td><td>Filters any data array to only records created within the past N days.</td></tr>
+  <tr><td><code>sendToWebhook(payload)</code></td><td>Posts JSON payload to WEBHOOK_URL_1. Returns {ok, status}. Logs failure gracefully.</td></tr>
+  <tr><td><code>callGroqAI(apiKey, systemPrompt, userPrompt)</code></td><td>Makes authenticated Groq API call with configured system context. Returns AI text response.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 14 -->
+<h1>14. Settings & Configuration</h1>
+<p><strong>Files:</strong> <code>backend/routes/settings.js</code>, <code>frontend/src/components/dashboard/SettingsModule.jsx</code></p>
+
+<table>
+  <tr><th>Tab / Section</th><th>Function</th></tr>
+  <tr><td>Business Profile</td><td>Update company name, legal name, GSTIN, PAN, business type, registration date.</td></tr>
+  <tr><td>Shop Information</td><td>Update store code, branch name, address, phone, email, currency, timezone, operating hours.</td></tr>
+  <tr><td>User Profile</td><td>View current logged-in user details (name, ID, email, phone, role).</td></tr>
+  <tr><td>Change Password</td><td>Securely update user password via <code>POST /api/settings/change-password</code>.</td></tr>
+  <tr><td>Security Settings</td><td>Configure 2FA, session timeout, password strength enforcement, multi-device login.</td></tr>
+  <tr><td>Role Management</td><td>View and manage employee roles and permissions matrix.</td></tr>
+  <tr><td>App Preferences</td><td>Set invoice prefix, date format. Trigger 4 report actions (see Section 13).</td></tr>
+  <tr><td>Logout</td><td>Clears localStorage session and redirects to login page.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 15 -->
+<h1>15. Role-Based Access Control (RBAC)</h1>
+<p><strong>File:</strong> <code>backend/middleware/rbac.js</code></p>
+
+<table>
+  <tr><th>Role</th><th>Accessible Modules</th></tr>
+  <tr><td><strong>owner</strong></td><td>All modules: Dashboard, Analytics, Invoices, Inventory, POS, Employees, AI, Reports, Settings, Pending Bills</td></tr>
+  <tr><td><strong>cashier</strong></td><td>POS Billing, Customer Bills, Inventory (read-only), Pending Bills</td></tr>
+  <tr><td><strong>financier</strong></td><td>Invoices, Expenses, Transactions, Reports, Customer Bills</td></tr>
+  <tr><td><strong>store_manager</strong></td><td>Inventory (full), POS, Vendors</td></tr>
+  <tr><td><strong>accountant</strong></td><td>Transactions, Expenses, Reports</td></tr>
+</table>
+
+<h4>Middleware Functions</h4>
+<table>
+  <tr><th>Function</th><th>Description</th></tr>
+  <tr><td><code>validateShopIsolation()</code></td><td>Extracts x-user-role, x-user-id, x-shop-id from request headers. Sets req.shopId for all subsequent database queries. Applied to all business data routes.</td></tr>
+  <tr><td><code>requireRoles(roles[])</code></td><td>Checks if req.userRole is in the allowed roles array. Returns 403 Forbidden if not authorized.</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 16 -->
+<h1>16. Frontend Pages & Key Components</h1>
+
+<table>
+  <tr><th>File</th><th>Component</th><th>Key Functions</th></tr>
+  <tr><td><code>LoginPage.jsx</code></td><td>Login Screen</td><td>handleLogin, handleRoleToggle, form validation, session initialization</td></tr>
+  <tr><td><code>SignupPage.jsx</code></td><td>Registration Screen</td><td>handleSignup, business type selection, form validation, auto-redirect</td></tr>
+  <tr><td><code>BusinessOwnerDashboard.jsx</code></td><td>Main Application Shell</td><td>handleModuleClick, sidebar navigation, role-based module rendering, OverviewModule, PendingBillsModule, InvoiceManagementModule, EmployeeModule, VendorModule, TransactionModule</td></tr>
+  <tr><td><code>PosBillingModule.jsx</code></td><td>Point of Sale</td><td>handleAddItem, handleCheckout, handleBarcodeScan, calculateTotals, credit/paid mode toggle</td></tr>
+  <tr><td><code>AiAssistantModule.jsx</code></td><td>AI Chat Interface</td><td>handleSendMessage, handleAssistantSwitch, model selector, chat history rendering</td></tr>
+  <tr><td><code>InventoryReadOnlyModule.jsx</code></td><td>Employee Stock View</td><td>read-only inventory list for cashier/staff roles</td></tr>
+  <tr><td><code>SettingsModule.jsx</code></td><td>Settings Panel</td><td>handleSaveSettings, handleChangePassword, handleSendDailyReport, handleSendWeeklyReport, handleSendReminders, handleGrowthAdvice</td></tr>
+  <tr><td><code>UploadInvoiceFullPage.jsx</code></td><td>OCR Invoice Upload</td><td>handleFileUpload, parseOcrData, extractInvoiceFields, scanWithNvidiaAI, saveToBackend</td></tr>
+  <tr><td><code>CreateInvoiceFullPage.jsx</code></td><td>Manual Invoice Creation</td><td>handleAddLineItem, calculateGrandTotal, handleSaveInvoice</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 17 -->
+<h1>17. Database Structure (data.json)</h1>
+
+<table>
+  <tr><th>Table Name</th><th>Fields</th><th>Auto-Populated By</th></tr>
+  <tr><td><code>users</code></td><td>id, user_id, company_name, mobile_number, email, password_hash, role, owner_id</td><td>Signup API</td></tr>
+  <tr><td><code>invoices</code></td><td>id, user_id, invoice_number, supplier_name, grand_total, status, riskScore, items, created_at</td><td>Manual entry, OCR upload</td></tr>
+  <tr><td><code>customer_bills</code></td><td>id, user_id, bill_number, customer_name, grand_total, status, due_date, items, created_at</td><td>POS checkout</td></tr>
+  <tr><td><code>inventory</code></td><td>id, user_id, name, category, stockQty, minAlertThreshold, unitPrice, status, supplier</td><td>Manual add, Invoice upload</td></tr>
+  <tr><td><code>expenses</code></td><td>id, user_id, category, amount, date, paidTo, status</td><td>Manual, Salary payout</td></tr>
+  <tr><td><code>transactions</code></td><td>id, user_id, date, type (IN/OUT), description, category, amount, balance</td><td>POS sale, Bill settlement, Salary</td></tr>
+  <tr><td><code>employees</code></td><td>id, user_id, name, role, phone, salary, salary_date, payment_status, payment_history</td><td>Add Employee</td></tr>
+  <tr><td><code>vendors</code></td><td>id, user_id, name, contact, category, rating</td><td>Add Vendor</td></tr>
+  <tr><td><code>fraud_alerts</code></td><td>id, user_id, type, message, severity, resolved, timestamp</td><td>Duplicate bill detection</td></tr>
+  <tr><td><code>activity_logs</code></td><td>id, user_id, action, details, category, created_at</td><td>All write operations</td></tr>
+  <tr><td><code>webhooks</code></td><td>id, eventType, source, referenceId, itemCount, timestamp, status</td><td>Stock webhook trigger</td></tr>
+  <tr><td><code>settings</code></td><td>Keyed by shopId — business_profile, shop_info, security, app_preferences</td><td>Settings save</td></tr>
+</table>
+
+<hr>
+
+<!-- SECTION 18 -->
+<h1>18. Frontend API Services Summary</h1>
+<p><strong>File:</strong> <code>frontend/src/services/api.js</code></p>
+
+<table>
+  <tr><th>Function Name</th><th>HTTP Method</th><th>Endpoint Called</th></tr>
+  <tr><td><code>apiLogin(userId, password, role)</code></td><td>POST</td><td>/api/auth/login</td></tr>
+  <tr><td><code>apiSignup(userData)</code></td><td>POST</td><td>/api/auth/signup</td></tr>
+  <tr><td><code>apiGetUsers()</code></td><td>GET</td><td>/api/auth/users</td></tr>
+  <tr><td><code>apiGetDashboardStats()</code></td><td>GET</td><td>/api/dashboard/stats</td></tr>
+  <tr><td><code>apiGetNotifications()</code></td><td>GET</td><td>/api/dashboard/notifications</td></tr>
+  <tr><td><code>apiGetInvoices()</code></td><td>GET</td><td>/api/invoices</td></tr>
+  <tr><td><code>apiCreateInvoice(data)</code></td><td>POST</td><td>/api/invoices</td></tr>
+  <tr><td><code>apiUploadOcrInvoice(data)</code></td><td>POST</td><td>/api/invoices/upload</td></tr>
+  <tr><td><code>apiScanOcrFile(file)</code></td><td>POST</td><td>/api/invoices/scan-file</td></tr>
+  <tr><td><code>apiGetInventory()</code></td><td>GET</td><td>/api/inventory</td></tr>
+  <tr><td><code>apiCreateInventoryItem(data)</code></td><td>POST</td><td>/api/inventory</td></tr>
+  <tr><td><code>apiUpdateInventoryItem(id, data)</code></td><td>PUT</td><td>/api/inventory/:id</td></tr>
+  <tr><td><code>apiDeleteInventoryItem(id)</code></td><td>DELETE</td><td>/api/inventory/:id</td></tr>
+  <tr><td><code>apiTriggerStockWebhook(eventType, payload)</code></td><td>POST</td><td>/api/inventory/webhook/trigger</td></tr>
+  <tr><td><code>apiGetWebhookLogs()</code></td><td>GET</td><td>/api/inventory/webhook/logs</td></tr>
+  <tr><td><code>apiGetExpenses()</code></td><td>GET</td><td>/api/expenses</td></tr>
+  <tr><td><code>apiCreateExpense(data)</code></td><td>POST</td><td>/api/expenses</td></tr>
+  <tr><td><code>apiGetTransactions()</code></td><td>GET</td><td>/api/transactions</td></tr>
+  <tr><td><code>apiGetPayments()</code></td><td>GET</td><td>/api/payments</td></tr>
+  <tr><td><code>apiGetVendors()</code></td><td>GET</td><td>/api/vendors</td></tr>
+  <tr><td><code>apiCreateVendor(data)</code></td><td>POST</td><td>/api/vendors</td></tr>
+  <tr><td><code>apiGetEmployees()</code></td><td>GET</td><td>/api/employees</td></tr>
+  <tr><td><code>apiAddEmployee(data)</code></td><td>POST</td><td>/api/employees</td></tr>
+  <tr><td><code>apiDeleteEmployee(id)</code></td><td>DELETE</td><td>/api/employees/:id</td></tr>
+  <tr><td><code>apiPayEmployeeSalary(id)</code></td><td>PUT</td><td>/api/employees/:id/pay-salary</td></tr>
+  <tr><td><code>apiAiChat(query, companyName, type)</code></td><td>POST</td><td>/api/ai/chat</td></tr>
+  <tr><td><code>apiGetAiInsights()</code></td><td>GET</td><td>/api/ai/insights</td></tr>
+  <tr><td><code>apiGetCustomerBills()</code></td><td>GET</td><td>/api/customer-bills</td></tr>
+  <tr><td><code>apiCreateCustomerBill(data)</code></td><td>POST</td><td>/api/customer-bills</td></tr>
+  <tr><td><code>apiPayCustomerBill(id)</code></td><td>PUT</td><td>/api/customer-bills/:id/pay</td></tr>
+  <tr><td><code>apiGetSettings()</code></td><td>GET</td><td>/api/settings</td></tr>
+  <tr><td><code>apiUpdateSettings(data)</code></td><td>PUT</td><td>/api/settings</td></tr>
+  <tr><td><code>apiChangePassword(userId, old, new)</code></td><td>POST</td><td>/api/settings/change-password</td></tr>
+  <tr><td><code>apiSendDailyReport()</code></td><td>POST</td><td>/api/reports/send-daily</td></tr>
+  <tr><td><code>apiSendWeeklyReport()</code></td><td>POST</td><td>/api/reports/send-weekly</td></tr>
+  <tr><td><code>apiSendReminders()</code></td><td>POST</td><td>/api/reports/send-reminders</td></tr>
+  <tr><td><code>apiGetGrowthAdvice()</code></td><td>POST</td><td>/api/reports/growth-advice</td></tr>
+</table>
+
+<hr>
+<p style="text-align:center; color:#888; font-size:9pt; margin-top:30px;">
+  Finora AI — Functions Documentation | SNS Cohart 2026 | Confidential &amp; Proprietary
+</p>
+
+</body>
+</html>

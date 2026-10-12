@@ -1,0 +1,16 @@
+{
+  "name": "finsight-ai-root",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "server": "npm --prefix backend run dev",
+    "start:all": "concurrently \"npm run server\" \"npm run dev\"",
+    "preview": "npm --prefix frontend run preview"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

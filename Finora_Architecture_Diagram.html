@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finora AI - System Architecture</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@400;500;600&display=swap');
+        
+        :root {
+            --bg-dark: #020617;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-hover: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* Accents */
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.05), transparent 25%),
+                radial-gradient(circle at 90% 50%, rgba(59, 130, 246, 0.05), transparent 25%),
+                radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.05), transparent 25%);
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+        
+        .header { text-align: center; margin-bottom: 2.5rem; }
+        .header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        .header p { color: var(--accent-green); font-size: 1.1rem; font-weight: 500; }
+        .header .badges { margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; }
+        .badge { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; color: #4ade80; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Glass Card */
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        .card:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.2); }
+        
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #e2e8f0;
+            letter-spacing: 0.03em;
+        }
+        
+        .border-green { border-top: 4px solid var(--accent-green); }
+        .border-blue { border-top: 4px solid var(--accent-blue); }
+        .border-purple { border-top: 4px solid var(--accent-purple); }
+        .border-orange { border-top: 4px solid var(--accent-orange); }
+        
+        /* Columns */
+        .left-col { grid-column: 1; display: flex; flex-direction: column; gap: 1.5rem; }
+        .mid-col { grid-column: 2; display: flex; flex-direction: column; gap: 1.5rem; }
+        .right-col { grid-column: 3; display: flex; flex-direction: column; gap: 1.5rem; }
+        .bottom-row { grid-column: 2 / 4; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+        .flows-row { grid-column: 1 / 4; margin-top: 1rem; }
+        
+        /* Utilities */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        
+        /* Item Lists */
+        .item-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .item {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+        }
+        .item:hover { transform: translateX(4px); border-color: rgba(255,255,255,0.15); }
+        
+        /* Flow Boxes (Horizontal) */
+        .horizontal-flow { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+        .flow-box {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            text-align: center;
+            flex: 1;
+        }
+        .arrow { color: var(--text-muted); font-size: 1.2rem; }
+        
+        /* Service Boxes */
+        .service-box {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.2s;
+        }
+        .service-box:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.05); }
+        .service-box h4 { font-size: 0.9rem; color: #fff; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+        .service-box ul { list-style: none; }
+        .service-box li { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .service-box li::before { content: "•"; color: var(--accent-blue); margin-right: 4px; }
+
+        /* Business Flows Grid */
+        .flows-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .flow-card { background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+        .flow-card h4 { font-size: 0.85rem; color: var(--accent-green); margin-bottom: 0.5rem; text-transform: uppercase; }
+        .flow-step { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .flow-step span { color: #f8fafc; margin-right: 4px; }
+        
+        /* Emojis as Icons */
+        .icon { font-style: normal; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>FINORA AI</h1>
+        <p>HIGH LEVEL SYSTEM ARCHITECTURE</p>
+        <div class="badges">
+            <span class="badge">🔄 Automate Billing</span>
+            <span class="badge">🛡️ Prevent Fraud</span>
+            <span class="badge">📦 Optimize Inventory</span>
+            <span class="badge">📈 Maximize Profitability</span>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        
+        <!-- ================= LEFT COLUMN ================= -->
+        <div class="left-col">
+            <div class="card border-green">
+                <div class="card-title"><i class="icon">💻</i> 1. CLIENT LAYER</div>
+                
+                <h4 style="font-size:0.8rem; color:var(--accent-green); margin-bottom:0.5rem;">Current Clients</h4>
+                <div class="item-list" style="margin-bottom:1.5rem;">
+                    <div class="item"><i class="icon">🌐</i> Web App (React SPA)</div>
+                    <div class="item"><i class="icon">📟</i> POS Terminal (Cashier)</div>
+                    <div class="item"><i class="icon">📸</i> Invoice Scanner (OCR)</div>
+                    <div class="item"><i class="icon">🤖</i> AI Assistant (Chat)</div>
+                    <div class="item"><i class="icon">📱</i> Telegram Bot (Alerts)</div>
+                    <div class="item"><i class="icon">📧</i> Email (OTP / Reports)</div>
+                </div>
+
+                <h4 style="font-size:0.8rem; color:var(--accent-purple); margin-bottom:0.5rem;">Future (Phase 2/3)</h4>
+                <div class="item-list">
+                    <div class="item"><i class="icon">📱</i> Mobile App (iOS/Android)</div>
+                    <div class="item"><i class="icon">👔</i> Accountant Portal (CA)</div>
+                    <div class="item"><i class="icon">🎙️</i> Voice Assistant</div>
+                    <div class="item"><i class="icon">⚙️</i> Super Admin Console</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MIDDLE COLUMN ================= -->
+        <div class="mid-col">
+            
+            <!-- 2. Edge -->
+            <div class="card border-blue">
+                <div class="card-title"><i class="icon">🌍</i> 2. EDGE & SECURITY LAYER</div>
+                <div class="horizontal-flow">
+                    <div class="flow-box">DNS</div><span class="arrow">→</span>
+                    <div class="flow-box">CDN<br><small>(Cloudflare)</small></div><span class="arrow">→</span>
+                    <div class="flow-box">WAF</div><span class="arrow">→</span>
+                    <div class="flow-box">DDoS</div><span class="arrow">→</span>
+                    <div class="flow-box">Load Balancer</div><span class="arrow">→</span>
+                    <div class="flow-box">API Gateway</div>
+                </div>
+            </div>
+
+            <!-- 3. Auth -->
+            <div class="card border-purple">
+                <div class="card-title"><i class="icon">🔐</i> 3. AUTHENTICATION & MULTI-TENANCY</div>
+                <div class="horizontal-flow" style="margin-bottom:1rem;">
+                    <div class="flow-box">Login / JWT</div><span class="arrow">→</span>
+                    <div class="flow-box">RBAC Engine</div><span class="arrow">→</span>
+                    <div class="flow-box">Tenant Resolution</div><span class="arrow">→</span>
+                    <div class="flow-box" style="border-color:var(--accent-green);">Tenant Validation</div>
+                </div>
+                <div style="font-size:0.8rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+                    <span><b>Hierarchy:</b> Owner > Financier > Manager > Cashier > Accountant</span>
+                    <span><b>Isolation:</b> Row Level Security (RLS) via shop_id</span>
+                </div>
+            </div>
+
+            <!-- 4. Core Services -->
+            <div class="card border-blue">
+                <div class="card-title"><i class="icon">⚙️</i> 4. CORE BUSINESS SERVICES (Modular Monolith)</div>
+                <div class="grid-4">
+                    <div class="service-box"><h4>Auth Service</h4><ul><li>Login / Signup</li><li>Role Mgmt</li><li>Password Reset</li></ul></div>
+                    <div class="service-box"><h4>POS / Billing</h4><ul><li>Customer Bills</li><li>Checkout</li><li>Receipts</li></ul></div>
+                    <div class="service-box"><h4>Invoice Service</h4><ul><li>OCR Upload</li><li>Manual Entry</li><li>Verification</li></ul></div>
+                    <div class="service-box"><h4>Inventory Service</h4><ul><li>Stock Mgmt</li><li>Adjustments</li><li>Low Stock</li></ul></div>
+                    <div class="service-box"><h4>Transaction</h4><ul><li>Ledger IN/OUT</li><li>Cash Flow</li><li>Categories</li></ul></div>
+                    <div class="service-box"><h4>Expense Service</h4><ul><li>Business Expenses</li><li>Salary / Rent</li></ul></div>
+                    <div class="service-box"><h4>Payment Service</h4><ul><li>Credit / Uddhar</li><li>Due Tracking</li></ul></div>
+                    <div class="service-box"><h4>Employee Service</h4><ul><li>Roles / Attendance</li><li>Salary Records</li></ul></div>
+                    <div class="service-box"><h4>Vendor Service</h4><ul><li>Pricing History</li><li>Vendor Rating</li></ul></div>
+                    <div class="service-box"><h4>Customer Service</h4><ul><li>Credit Limits</li><li>Payment History</li></ul></div>
+                    <div class="service-box"><h4>AI Assistant</h4><ul><li>Business Q&A</li><li>Insights</li></ul></div>
+                    <div class="service-box"><h4>Reports Service</h4><ul><li>Weekly P&L</li><li>Growth Advisor</li></ul></div>
+                </div>
+            </div>
+
+            <!-- 5 & 6 Split -->
+            <div class="grid-2">
+                <div class="card border-orange">
+                    <div class="card-title"><i class="icon">⚡</i> 5. EVENT BUS</div>
+                    <div class="service-box" style="margin-bottom:0.5rem;">
+                        <h4>SNS Webhook Pipeline</h4>
+                        <p style="font-size:0.75rem; color:var(--text-muted);">InvoiceCreated, SaleCompleted, StockLow, FraudDetected...</p>
+                    </div>
+                </div>
+                <div class="card border-green">
+                    <div class="card-title"><i class="icon">🧠</i> 6. AI / ML PLATFORM</div>
+                    <div class="grid-2">
+                        <div class="service-box" style="padding:0.75rem;"><h4>OCR Engine</h4><ul><li>Tesseract.js</li><li>NVIDIA Vision</li></ul></div>
+                        <div class="service-box" style="padding:0.75rem;"><h4>LLM Insights</h4><ul><li>Groq Llama-3.1</li><li>Fraud Engine</li></ul></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Data Storage -->
+            <div class="card border-blue">
+                <div class="card-title"><i class="icon">🗄️</i> 7. DATA & STORAGE LAYER</div>
+                <div class="grid-2">
+                    <div class="horizontal-flow" style="flex:1;">
+                        <div class="flow-box" style="border-color:var(--accent-green);"><i class="icon">🐘</i> Primary DB<br><small>Supabase Postgres</small></div>
+                        <div class="flow-box"><i class="icon">📦</i> Object Storage<br><small>S3 (Images/PDFs)</small></div>
+                    </div>
+                    <div class="horizontal-flow" style="flex:1;">
+                        <div class="flow-box" style="border-color:var(--text-muted); opacity:0.7;"><i class="icon">⚡</i> Redis Cache<br><small>(Phase 2)</small></div>
+                        <div class="flow-box" style="border-color:var(--text-muted); opacity:0.7;"><i class="icon">📥</i> BullMQ<br><small>(Phase 2)</small></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- ================= RIGHT COLUMN ================= -->
+        <div class="right-col">
+            <!-- 11. Deployment -->
+            <div class="card border-purple">
+                <div class="card-title"><i class="icon">🚀</i> 11. DEPLOYMENT & INFRA</div>
+                <h4 style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Current (MVP)</h4>
+                <div class="item-list" style="margin-bottom:1.5rem;">
+                    <div class="item">Vercel (Frontend)</div>
+                    <div class="item">Railway / Render (API)</div>
+                    <div class="item">Supabase (DB & Auth)</div>
+                    <div class="item">Cloudflare</div>
+                </div>
+                
+                <h4 style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Future (Scale)</h4>
+                <div class="item-list">
+                    <div class="item">Kubernetes (EKS/GKE)</div>
+                    <div class="item">GitHub Actions CI/CD</div>
+                </div>
+            </div>
+
+            <!-- 12. Observability -->
+            <div class="card border-purple" style="flex:1;">
+                <div class="card-title"><i class="icon">📊</i> 12. OBSERVABILITY</div>
+                <div class="item-list">
+                    <div class="item">Health Checks</div>
+                    <div class="item">Logging (Winston)</div>
+                    <div class="item">Metrics (Prometheus)</div>
+                    <div class="item">Dashboards (Grafana)</div>
+                    <div class="item">Error Tracking (Sentry)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ================= BOTTOM ROW (8, 9, 10) ================= -->
+        <div class="bottom-row">
+            <div class="card border-blue" style="padding:1rem;">
+                <div class="card-title" style="margin-bottom:0.5rem;"><i class="icon">🏛️</i> 8. GST ENGINE</div>
+                <p style="font-size:0.8rem; color:var(--text-muted);">ITC Reconciliation ➔ GSTR-1 ➔ GSTR-3B</p>
+            </div>
+            <div class="card border-orange" style="padding:1rem;">
+                <div class="card-title" style="margin-bottom:0.5rem;"><i class="icon">🔔</i> 9. NOTIFICATIONS</div>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Telegram ➔ Gmail ➔ WhatsApp</p>
+            </div>
+            <div class="card border-purple" style="padding:1rem;">
+                <div class="card-title" style="margin-bottom:0.5rem;"><i class="icon">🛡️</i> 10. SECURITY & AUDIT</div>
+                <p style="font-size:0.8rem; color:var(--text-muted);">TLS 1.3 / AES-256 ➔ Immutable Logs</p>
+            </div>
+        </div>
+
+        <!-- ================= FLOWS ROW (13) ================= -->
+        <div class="flows-row card border-green">
+            <div class="card-title"><i class="icon">🔄</i> 13. CORE BUSINESS FLOWS</div>
+            <div class="flows-grid">
+                <div class="flow-card">
+                    <h4>1. Customer Sale (POS)</h4>
+                    <div class="flow-step"><span>1.</span> Select Items & Checkout</div>
+                    <div class="flow-step"><span>2.</span> Stock Deducted</div>
+                    <div class="flow-step"><span>3.</span> Bill Generated & Logged</div>
+                </div>
+                <div class="flow-card">
+                    <h4>2. Supplier Invoice</h4>
+                    <div class="flow-step"><span>1.</span> Upload Image</div>
+                    <div class="flow-step"><span>2.</span> OCR Extraction</div>
+                    <div class="flow-step"><span>3.</span> Verify & Stock Update</div>
+                </div>
+                <div class="flow-card">
+                    <h4>3. Fraud Detection</h4>
+                    <div class="flow-step"><span>1.</span> Invoice Uploaded</div>
+                    <div class="flow-step"><span>2.</span> Rule / ML Check</div>
+                    <div class="flow-step"><span>3.</span> Alert Owner on High Risk</div>
+                </div>
+                <div class="flow-card">
+                    <h4>4. Low Stock Flow</h4>
+                    <div class="flow-step"><span>1.</span> Qty < Threshold</div>
+                    <div class="flow-step"><span>2.</span> Event Published</div>
+                    <div class="flow-step"><span>3.</span> Telegram / WA Alert</div>
+                </div>
+                <div class="flow-card">
+                    <h4>5. AI Insight Flow</h4>
+                    <div class="flow-step"><span>1.</span> User Question</div>
+                    <div class="flow-step"><span>2.</span> LLM Processing (Groq)</div>
+                    <div class="flow-step"><span>3.</span> Display Answer</div>
+                </div>
+                <div class="flow-card">
+                    <h4>6. Weekly Report</h4>
+                    <div class="flow-step"><span>1.</span> Data Aggregation</div>
+                    <div class="flow-step"><span>2.</span> AI Generates Summary</div>
+                    <div class="flow-step"><span>3.</span> Email / Telegram Dispatch</div>
+                </div>
+                <div class="flow-card">
+                    <h4>7. Payment / Credit</h4>
+                    <div class="flow-step"><span>1.</span> Credit Sale Logged</div>
+                    <div class="flow-step"><span>2.</span> Due Date Tracked</div>
+                    <div class="flow-step"><span>3.</span> Ledger Reconciled</div>
+                </div>
+                <div class="flow-card">
+                    <h4>8. Prediction (Future)</h4>
+                    <div class="flow-step"><span>1.</span> Historical Data Auth</div>
+                    <div class="flow-step"><span>2.</span> Demand Forecasting</div>
+                    <div class="flow-step"><span>3.</span> AI Recommendations</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

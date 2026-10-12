@@ -1,0 +1,205 @@
+%% FinGuard AI (Finora AI) - System Architecture & Structural Flow Diagrams
+
+%% ==========================================
+%% 1. HIGH-LEVEL SYSTEM ARCHITECTURE
+%% ==========================================
+graph TD
+    subgraph ClientLayer ["Client Layer (Frontend)"]
+        UI["React 18 + Vite SPA"]
+        Dashboard["BusinessOwnerDashboard.jsx"]
+        POSModule["PosBillingModule.jsx"]
+        OCRModule["UploadInvoiceFullPage.jsx"]
+        AIModule["AiAssistantModule.jsx"]
+    end
+
+    subgraph SecurityLayer ["Security & Routing Layer"]
+        AuthMiddleware["validateShopIsolation Middleware"]
+        RBAC["Role-Based Access Control Guard"]
+    end
+
+    subgraph CoreBackend ["Express REST API Server (Node.js)"]
+        InvoicesRoute["/api/invoices (Invoice API)"]
+        POSRoute["/api/customer-bills (POS Engine)"]
+        InventoryRoute["/api/inventory (Stock Control)"]
+        AIRoute["/api/ai (AI Assistant Router)"]
+        ReportsRoute["/api/reports (Digest Engine)"]
+    end
+
+    subgraph DataStorage ["Data & Database Layer"]
+        SupabaseDB[("Supabase PostgreSQL Cloud DB")]
+        LocalJSON[("Local Store JSON Database")]
+        ActivityLog[("Immutable Audit Logs")]
+    end
+
+    subgraph ExternalAI ["AI Services & Integration Layer"]
+        TesseractEngine["Tesseract.js OCR Engine"]
+        NvidiaVision["NVIDIA Nemotron Vision AI (Llama-3.2-11b)"]
+        GroqLLM["Groq Cloud LLM (Llama-3.1-8b-instant)"]
+        WebhookPipeline["External Webhook Dispatcher (n8n/WhatsApp)"]
+    end
+
+    UI --> AuthMiddleware
+    AuthMiddleware --> RBAC
+    RBAC --> CoreBackend
+
+    OCRModule --> InvoicesRoute
+    POSModule --> POSRoute
+    AIModule --> AIRoute
+
+    InvoicesRoute --> TesseractEngine
+    TesseractEngine --> NvidiaVision
+    InvoicesRoute --> SupabaseDB
+    InvoicesRoute --> LocalJSON
+
+    POSRoute --> InventoryRoute
+    InventoryRoute --> SupabaseDB
+    POSRoute --> ActivityLog
+    POSRoute --> WebhookPipeline
+
+    AIRoute --> GroqLLM
+    ReportsRoute --> WebhookPipeline
+
+
+%% ==========================================
+%% 2. NEURAL OCR & FRAUD INTERCEPTOR PIPELINE
+%% ==========================================
+sequenceDiagram
+    autonumber
+    actor Owner as Business Owner / Financier
+    participant UI as Upload Invoice Page
+    participant Server as Express Server (/api/invoices/scan-file)
+    participant Tesseract as Local Tesseract.js Engine
+    participant Nvidia as NVIDIA Nemotron Vision API
+    participant FraudEngine as Fraud Screening Engine
+    participant DB as Supabase PostgreSQL
+
+    Owner->>UI: Upload Invoice Image (PNG/JPG/PDF)
+    UI->>Server: POST /api/invoices/scan-file (Multipart Buffer)
+    Server->>Tesseract: Extract Raw ASCII Text from Image Buffer
+    Tesseract-->>Server: Return Extracted Raw Text String
+    Server->>Nvidia: Send Raw Text with Extraction Prompt
+    Nvidia-->>Server: Return Structured JSON (Supplier, Inv#, Items, Total, Tax)
+    Server->>FraudEngine: Run verifyDuplicate(existingList, scannedInvoice)
+    
+    alt Duplicate Invoice Number / Same Vendor Match
+        FraudEngine-->>Server: Flagged Duplicate (Risk Score: 0.95, Reason)
+        Server->>DB: Log Flagged Bill in fraud_alerts & ocr_invoices
+        Server-->>UI: Return JSON with Status = "Flagged High Risk"
+        UI-->>Owner: Display High-Risk Red Warning Badge & Alert Details
+    else Verified Unique Invoice
+        FraudEngine-->>Server: Verification Passed (Risk Score: 0.0)
+        Server->>DB: Save Verified Invoice & Increment Inventory Quantities
+        Server-->>UI: Return Verified Invoice & Stock Updated Notification
+        UI-->>Owner: Display Verified Green Badge & Updated Inventory
+    end
+
+
+%% ==========================================
+%% 3. POS CHECKOUT & LIVE INVENTORY AUTO-SYNC LOOP
+%% ==========================================
+flowchart TD
+    Start([Customer Checkout at POS Counter]) --> ScanItems[Cashier Scans Item Barcodes / Selects Products]
+    ScanItems --> CalcTotal[System Calculates Subtotal + 18% GST = Grand Total]
+    CalcTotal --> SelectPayment{Payment Mode Selected?}
+    
+    SelectPayment -- Cash / UPI / Card --> SetPaid[Set Payment Status = 'Paid']
+    SelectPayment -- Credit / Udhar --> SetPending[Set Payment Status = 'Pending' & Set Due Date]
+    
+    SetPaid --> SubmitPOS[POST /api/customer-bills]
+    SetPending --> SubmitPOS
+    
+    SubmitPOS --> BeginTx[Begin Database ACID Transaction]
+    BeginTx --> CheckStock{Stock Available in Inventory?}
+    
+    CheckStock -- No --> RollbackTx[Rollback Transaction & Return 400 Out of Stock Error]
+    CheckStock -- Yes --> CreateBill[Insert Record into customer_bills]
+    
+    CreateBill --> DeductStock[Decrement SKU Stock Quantity in public.inventory]
+    DeductStock --> CreateTxLog[Insert Transaction Record in transactions table IN]
+    CreateTxLog --> AuditLog[Write Entry to activity_logs table]
+    AuditLog --> CommitTx[Commit Database Transaction]
+    
+    CommitTx --> DispatchWebhook[Dispatch Webhook Event to STOCK_CUSTOMER_BOUGHT]
+    DispatchWebhook --> CheckThreshold{Is Stock Quantity < minAlertThreshold?}
+    
+    CheckThreshold -- Yes --> TriggerAlert[Change Status to 'Low Stock Alert' & Notify Owner]
+    CheckThreshold -- No --> Finish([Complete POS Checkout & Print Receipt])
+    TriggerAlert --> Finish
+
+
+%% ==========================================
+%% 4. ROLE-BASED ACCESS CONTROL (RBAC) & MULTI-TENANT ISOLATION
+%% ==========================================
+graph LR
+    subgraph RequestContext ["Incoming Client HTTP Request"]
+        HeaderShop["x-shop-id Header (e.g., OWNER-1611)"]
+        HeaderRole["x-user-role Header"]
+        JWTToken["Authorization: Bearer JWT Token"]
+    end
+
+    subgraph SecurityGuard ["Security Guard Pipeline"]
+        ValidateIso["validateShopIsolation Middleware"]
+        ExtractTenant["Extract req.shopId = JWT.owner_id"]
+        RoleCheck{"Check Route Permission"}
+    end
+
+    subgraph ScopedQueries ["Tenant-Isolated Query Layer"]
+        UserQuery["SELECT * FROM inventory WHERE user_id = req.shopId"]
+        InvoiceQuery["SELECT * FROM invoices WHERE user_id = req.shopId"]
+        ReportQuery["SELECT * FROM transactions WHERE user_id = req.shopId"]
+    end
+
+    subgraph DeniedAccess ["Blocked Request"]
+        Error403["403 Forbidden / 401 Unauthorized"]
+    end
+
+    RequestContext --> ValidateIso
+    ValidateIso --> ExtractTenant
+    ExtractTenant --> RoleCheck
+
+    RoleCheck -- Allowed Role --> ScopedQueries
+    RoleCheck -- Unauthorized Role --> DeniedAccess
+
+
+%% ==========================================
+%% 5. AI VIRTUAL CFO CONTEXT INJECTION PIPELINE
+%% ==========================================
+sequenceDiagram
+    autonumber
+    actor Owner as Business Owner
+    participant UI as AI Chat Interface
+    participant Backend as AI Router (/api/ai/chat)
+    participant DB as Local & Supabase DB
+    participant Groq as Groq LLM (Llama-3.1-8b-instant)
+
+    Owner->>UI: Types Question: "What was my net profit this week?"
+    UI->>Backend: POST /api/ai/chat (Prompt, Role, Assistant Category)
+    Backend->>DB: Compute Live Financial Context (Revenue, Expenses, Credit, Low Stock)
+    DB-->>Backend: Return Aggregated Store Context Metrics
+    Backend->>Backend: Inject System Prompt + Live Metrics + Anti-Hallucination Constraints
+    Backend->>Groq: Call Groq API with Scoped Prompt & Context
+    Groq-->>Backend: Return Structured AI Response & Recommended Action
+    Backend-->>UI: Return JSON Response
+    UI-->>Owner: Render Natural Language Answer + 1-Click Action Buttons
+
+
+%% ==========================================
+%% 6. 3-YEAR PRODUCT EVOLUTION ROADMAP
+%% ==========================================
+timeline
+    title FinGuard AI - 3-Year Product Evolution Roadmap
+    section Year 1 : MVP Core & Market Launch
+        Zero-Manual-Entry OCR Scan : NVIDIA Nemotron + Tesseract.js
+        Fraud Interceptor : Duplicate invoice & price tolerance engine
+        POS Billing & Live Inventory : Real-time stock auto-sync
+        RBAC & Data Scoping : 5 user roles with multi-tenant isolation
+    section Year 2 : Mobile & Ecosystem Automation
+        Native Mobile Apps : iOS & Android camera bill scanner
+        WhatsApp Business Integration : Auto-receipts & payment reminder bots
+        Open Banking Integration : Direct bank feed auto-reconciliation
+        Vendor Price Engine : Multi-supplier price comparison matrix
+    section Year 3 : Autonomous Commercial OS
+        Autonomous Reordering : Automated vendor PO dispatch
+        Embedded Working Capital Loans : Instant NBFC loan approval via POS velocity
+        Multi-Store Chain Sync : Enterprise multi-branch inventory balancing
+        Predictive Tax Auto-Filing : Autonomous GSTR-1 & 3B filing
